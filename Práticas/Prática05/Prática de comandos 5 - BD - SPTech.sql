@@ -1,3 +1,5 @@
+-- EXERCÍCIO 1
+
 create database sprint2;
 
 use sprint2;
@@ -29,7 +31,7 @@ create table cliente (
 
 -- Inserir dados nas tabelas, de forma que exista mais de um tipo de animal diferente, e que exista algum cliente com mais de um pet cadastrado. Procure inserir pelo menos 2 clientes diferentes que tenham o mesmo sobrenome.
 insert into cliente values 
-	(null, 'Luiz', 'Filler', null, '11-973721555', '02214-010', 'Rua das Promessas', '608', 'Vila Medeiros', 'São Paulo'),
+	(null, 'Luiz', 'Filler', null, '11-973721555', '02517-010', 'Rua das Ruas', '38', 'Vila Medeiros', 'São Paulo'),
 	(null, 'Kaio', 'Silva', null, '11-912345678', '02214-020', 'Rua Qualquer', '702', 'Vila Alguma', 'São Paulo'),
 	(null, 'Pedro', 'Silva', null, '11-9123435281', '02215-032', 'Rua Alguma', '52', 'Vila Qualquer', 'São Paulo');
     
@@ -60,32 +62,113 @@ select nome, nascimento from pet;
 select * from pet order by nome asc;
 
 -- Exibir os dados dos clientes ordenados em ordem decrescente pelo bairro.
-
+select * from cliente order by bairro desc;
 
 -- Exibir os dados dos pets cujo nome comece com uma determinada letra.
-
+select * from pet 
+	where nome like 'B%'; 
 
 -- Exibir os dados dos clientes que têm o mesmo sobrenome.
-
+select * from cliente 
+	where sobrenome = 'Silva';
 
 -- Alterar o telefone de um determinado cliente.
-
+update cliente set telefone_Cel = '11-912341555' where idCliente = 1;
 
 -- Exibir os dados dos clientes para verificar se alterou.
-
+select * from cliente;
 
 -- Exibir os dados dos pets e dos seus respectivos donos.
-
+select * from pet
+	join cliente on idCliente = fkCliente;
 
 -- Exibir os dados dos pets e dos seus respectivos donos, mas somente de um determinado cliente.
-
+select * from pet 
+	join cliente on idCliente = fkCliente
+		where idCliente = 2;
 
 -- Excluir algum pet.
-
+delete from pet where idPet = 100;
 
 -- Exibir os dados dos pets para verificar se excluiu.
-
+select * from pet;
 
 -- Excluir as tabelas.
+drop table pet, cliente;
+show tables;
 
+-- EXERCÍCIO 2
+create database sprint2;
+
+use sprint2;
+
+-- Implemente no MySQL as tabelas equivalentes ao modelo que você criou
+create table pessoa (
+	idPessoa int primary key auto_increment,
+    nome varchar(45),
+    nascimento date,
+    profissao varchar(45)
+);
+
+create table gasto (
+	idGasto int primary key auto_increment,
+    dataGasto date,
+    valor decimal(10,2),
+    descricao varchar(255),
+    fkPessoa int, constraint foreign key (fkPessoa)
+		references pessoa(idPessoa)
+);
+
+-- Insira dados nas tabelas.
+insert into pessoa values 
+	(null, 'Luiz Nison', '1999-08-18', 'Psicologia'),
+	(null, 'Rosana', '1968-12-20', 'Administração'),
+	(null, 'Pedro', '1998-01-10', 'Contabilidade'),
+	(null, 'Dante', '1997-10-08', 'Psicologia'),
+	(null, 'Marcos Henrique', '1999-08-22', 'Enfermagem');
+
+desc gasto;
+insert into gasto values
+	(null, '2022-09-12', 150.90, 'Roupa de cama nova', 1),
+	(null, '2022-09-12', 40.00, 'Recarga valte transporte', 1),
+	(null, '2022-09-13', 12.90, 'Café de manhã com os amigos', 1),
+	(null, '2022-09-10', 4.40, 'Passagem de metrô', 2),
+	(null, '2022-09-13', 57.90, 'Game novo', 2),
+	(null, '2022-09-10', 12.70, 'Ingresso para show no parque', 3),
+	(null, '2022-09-11', 30.00, 'Recarga celular 2º chip', 3),
+	(null, '2022-09-09', 22.50, 'Escova para o cabelo', 4),
+	(null, '2022-09-10', 10.20, 'Meia nova personalizada', 4),
+	(null, '2022-09-11', 9.90, 'Premium do Spotify', 4),
+	(null, '2022-09-12', 11.90, 'Amazon Prime', 4),
+	(null, '2022-09-08', 2240.90, 'Passagens de avião para Acapulco', 5),
+	(null, '2022-09-011', 790.00, 'Malas novas para viagem', 5);
+
+-- Exiba os dados de cada tabela individualmente.
+select * from pessoa;
+select * from gasto;
+
+-- Exiba somente os dados de cada tabela, mas filtrando por algum dado da tabela (por exemplo, as pessoas de alguma profissão, etc).
+
+
+-- Exiba os dados das pessoas e dos seus gastos correspondentes.
+select * from pessoa
+	join gasto on idPessoa = fkPessoa;
+
+-- Exiba os dados de uma determinada pessoa e dos seus gastos correspondentes.
+select * from pessoa
+	join gasto on idPessoa = fkPessoa
+		where idPessoa = 4;
+
+-- Atualize valores já inseridos na tabela.
+update gasto set valor = 32.50 where idGasto = 8;
+update gasto set valor = 18.20 where idGasto = 9;
+update gasto set valor = 14.90 where idGasto = 10;
+update gasto set valor = 22.90 where idGasto = 11;
+
+
+-- Exclua um ou mais registros de alguma tabela
+delete from gasto where idGasto in (4, 6, 7);
+select * from gasto;
+
+-- EXERCÍCIO 3
 
