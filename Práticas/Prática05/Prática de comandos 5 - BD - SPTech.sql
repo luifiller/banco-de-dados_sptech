@@ -178,31 +178,100 @@ create database PraticaFuncionario;
 use PraticaFuncionario;
 
 -- Criar as tabelas correspondentes à sua modelagem.
--- OBS: Foi considerado como premissa/regra de negócio que os andares das empresas são representado apenas por números e sem distinção de blocos por qualquer caracter.alter
+-- OBS: Foi considerado como premissa/regra de negócio que os andares das empresas são representado apenas por números e sem distinção de blocos por qualquer caracter.
+-- OBS: Foi considerado como regra de negócio que para ser um funcionário da empresa, este precisa estar alocado em um setor e um setor precisa/deve ter funcionários.
+
+create table setor (
+	idSetor int primary key auto_increment,
+    nome_Setor varchar(45),
+    andar int
+);
+
+create table funcionario (
+	idFunc int primary key auto_increment,
+    nome_Func varchar(45),
+    sobrenome_Func varchar(45),
+    telefone_Fixo varchar(20),
+    telefone_Cel varchar(20),
+    salario decimal(8,2),
+    fkSetor int, constraint foreign key (fkSetor)
+		references setor(idSetor)
+);
+
+create table acompanhante (
+	idAcomp int auto_increment,
+    nome_Acomp varchar(45),
+    sobrenome_Acomp varchar(45),
+    relacao_func varchar(45),
+    nascimento date,
+    fkFunc int, constraint foreign key (fkFunc)
+		references funcionario(idFunc),
+	fkSetor int, constraint foreign key (fkSetor)
+		references setor(idSetor),
+	primary key (idAcomp, fkFunc, fkSetor)
+);
 
 -- Inserir dados nas tabelas, de forma que exista mais de um funcionário em cada setor cadastrado.
+insert into setor values 
+	(null, 'Recursos Humanos', '3'),
+	(null, 'Jurídico', '2'),
+	(null, 'Desenvolvimento Web', '1');
 
+insert into funcionario values
+	(null, 'Thiago', 'Gomes', null, '11-92345-6789', 3600.00, 1),
+	(null, 'Dan', 'Josua', null, '11-95795-9779', 3600.00, 1),
+	(null, 'Lethicia', 'Alcantara Soares', null, '11-96783-9816', 3600.00, 1),
+	(null, 'Henrique', 'Silva Menezes', null, '11-92875-3471', 4200.00, 2),
+	(null, 'Karla', 'Soares', null, '11-98670-2252', 4200.00, 2),
+	(null, 'Luiz Nison', 'Filler', null, '11-97372-1555', 2800.00, 3),
+	(null, 'Kaio', 'Renan', null, '11-96215-6355', 2800.00, 3),
+	(null, 'Pedro', 'Rocha', null, '11-93456-3467', 2800.00, 3);
+
+insert into acompanhante values 
+	(null, 'Maria', 'Aparecida', 'Mãe', '1968-12-20', 1, 1),
+	(null, 'Carlos', 'Gomes', 'Irmão', '1999-05-10', 1, 1),
+	(null, 'João Carlos', 'Soares', 'Pai', '1962-02-16', 3, 1),
+	(null, 'Carla', 'Alcantara', 'Mãe', '1963-08-07', 3, 1),
+	(null, 'Robson', 'Soares', 'Pai', '1960-09-07', 5, 2),
+	(null, 'Roberta', 'Mendonça', 'Mãe', '1963-11-15', 5, 2),
+	(null, 'Alberto', 'da Silva', 'Primo', '1998-05-05', 6, 3),
+	(null, 'Jaqueline', 'da Silva', 'Prima', '1997-06-06', 6, 3);
 
 -- Exibir todos os dados de cada tabela criada, separadamente.
+select * from setor;
 
+select * from funcionario;
 
--- Fazer os acertos da chave estrangeira, caso não tenha feito no momento da criação.
-
+select * from acompanhante;
 
 -- Exibir os dados dos setores e dos seus respectivos funcionários.
-
+select * from setor 
+	join funcionario on fkSetor = idSetor;
 
 -- Exibir os dados de um determinado setor (informar o nome do setor na consulta) e dos seus respectivos funcionários.
-
+select setor.*, funcionario.* from setor 
+	join funcionario on fkSetor = idSetor
+		where idSetor = 1;
 
 -- Exibir os dados dos funcionários e de seus acompanhantes.
-
+select funcionario.*, acompanhante.* from funcionario
+	join acompanhante on fkFunc = idFunc;
 
 -- Exibir os dados de apenas um funcionário (informar o nome do funcionário) e os dados de seus acompanhantes.
-
+select funcionario.*, acompanhante.* from funcionario
+	join acompanhante on fkFunc = idFunc
+		where idFunc = 1;
 
 -- Exibir os dados dos funcionários, dos setores em que trabalham e dos seus acompanhantes
+select funcionario.*, setor.*, acompanhante.* from funcionario
+	join setor on fkSetor = idSetor
+		join acompanhante on fkFunc = idFunc;
 
+-- Exibir os dados de um funcionário específico, do seu setor e dos seus acompanhantes
+select funcionario.*, setor.*, acompanhante.* from funcionario
+	join setor on fkSetor = idSetor
+		join acompanhante on fkFunc = idFunc
+			where idFunc = 6;
 
 -- EXERCICIO 4
 -- Criar um banco de dados chamado Treinador.
