@@ -171,4 +171,94 @@ delete from gasto where idGasto in (4, 6, 7);
 select * from gasto;
 
 -- EXERCÍCIO 3
+-- Criar um banco de dados chamado PraticaFuncionario.
+create database PraticaFuncionario;
+
+-- Selecionar esse banco de dados.
+use PraticaFuncionario;
+
+-- Criar as tabelas correspondentes à sua modelagem.
+-- OBS: Foi considerado como premissa/regra de negócio que os andares das empresas são representado apenas por números e sem distinção de blocos por qualquer caracter.alter
+
+-- Inserir dados nas tabelas, de forma que exista mais de um funcionário em cada setor cadastrado.
+
+
+-- Exibir todos os dados de cada tabela criada, separadamente.
+
+
+-- Fazer os acertos da chave estrangeira, caso não tenha feito no momento da criação.
+
+
+-- Exibir os dados dos setores e dos seus respectivos funcionários.
+
+
+-- Exibir os dados de um determinado setor (informar o nome do setor na consulta) e dos seus respectivos funcionários.
+
+
+-- Exibir os dados dos funcionários e de seus acompanhantes.
+
+
+-- Exibir os dados de apenas um funcionário (informar o nome do funcionário) e os dados de seus acompanhantes.
+
+
+-- Exibir os dados dos funcionários, dos setores em que trabalham e dos seus acompanhantes
+
+
+-- EXERCICIO 4
+-- Criar um banco de dados chamado Treinador.
+create database Treinador;
+
+-- Selecionar esse banco de dados.
+use Treinador;
+
+-- Criar as tabelas correspondentes à sua modelagem.
+create table treinador (
+	idTreinador int primary key auto_increment,
+    nome varchar(45),
+    sobrenome varchar(45),
+    experiencia varchar(45), constraint chkExp check
+		(experiencia in ('Experiente', 'Não experiente')),
+	telefone_Fixo varchar(20),
+    telefone_Cel varchar(20),
+    email varchar(100), constraint chkEmail check
+		(email like ('%@%')),
+	fkTreinadorExp int, constraint foreign key (fkTreinadorExp)
+		references Treinador(idTreinador)
+) auto_increment = 10;
+
+
+create table nadador (
+	idNadador int primary key auto_increment, 
+    nome varchar(45),
+    sobrenome varchar(45),
+    estado varchar(45),
+    nascimento date, 
+    fkTreinador int, constraint foreign key (fkTreinador)
+		references Treinador(idTreinador)
+) auto_increment = 100;
+
+-- Inserir dados nas tabelas, de forma que exista mais de um nadador para algum treinador, e mais de um treinador sendo orientado por algum treinador mais experiente.
+
+
+-- Exibir todos os dados de cada tabela criada, separadamente.
+select * from nadador;
+
+select * from treinador;
+
+-- Exibir os dados dos treinadores e os dados de seus respectivos nadadores.
+
+
+-- Exibir os dados de um determinado treinador (informar o nome do treinador na consulta) e os dados de seus respectivos nadadores.
+
+
+-- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores.
+
+
+-- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores, porém somente de um determinado treinador orientador (informar o nome do treinador na consulta).
+
+
+-- Exibir os dados dos treinadores, os dados dos respectivos nadadores e os dados dos respectivos treinadores orientadores.
+
+
+-- Exibir os dados de um treinador (informar o seu nome na consulta), os dados dos respectivos nadadores e os dados do seu treinador orientador.
 
