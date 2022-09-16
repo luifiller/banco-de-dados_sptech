@@ -286,15 +286,15 @@ create table treinador (
     nome varchar(45),
     sobrenome varchar(45),
     experiencia varchar(45), constraint chkExp check
-		(experiencia in ('Experiente', 'Não experiente')),
+		(experiencia in ('Experiente', 'Novato')),
 	telefone_Fixo varchar(20),
     telefone_Cel varchar(20),
     email varchar(100), constraint chkEmail check
 		(email like ('%@%')),
 	fkTreinadorExp int, constraint foreign key (fkTreinadorExp)
-		references Treinador(idTreinador)
+		references treinador(idTreinador)
 ) auto_increment = 10;
-
+SET FOREIGN_KEY_CHECKS=0;
 
 create table nadador (
 	idNadador int primary key auto_increment, 
@@ -303,11 +303,33 @@ create table nadador (
     estado varchar(45),
     nascimento date, 
     fkTreinador int, constraint foreign key (fkTreinador)
-		references Treinador(idTreinador)
+		references treinador(idTreinador)
 ) auto_increment = 100;
 
 -- Inserir dados nas tabelas, de forma que exista mais de um nadador para algum treinador, e mais de um treinador sendo orientado por algum treinador mais experiente.
+desc treinador;
 
+insert into treinador values
+	(null, 'Janna', 'Livramento', 'Experiente', null, '11-98983-1229', 'janna.livramento@hotmail.com', null),
+	(null, 'Amanda', 'Azevedo', 'Novato', null, '11-99933-9999', 'amanda.azevedo@gmail.com', 10),
+	(null, 'Pedro', 'Pedroso', 'Experiente', null, '11-97523-3333', 'pedro.pedroso@gmail.com', null),
+	(null, 'Luiz Nison', 'Filler', 'Novato', null, '11-97372-1555', 'luiz.f@gmail.com', 12),
+	(null, 'Giulia', 'Giuliana', 'Novato', null, '11-92456-4443', 'giulia.giuliana@outlook.com', 12),
+	(null, 'Romário', 'Mariano', 'Novato', null, '11-96777-2225', 'romarinho.maneirinho@hotmail.com', 10),
+	(null, 'José', 'Pereira de Lima', 'Experiente', null, '11-97652-1111', 'zezinho.borracharia@gmail.com', null),
+	(null, 'Marcella', 'Caetano Veloso', 'Novato', null, '11-97561-0000', 'marcelinha.do.agogo@gmail.com', 16);
+    
+insert into nadador values
+	(null, 'Kara', 'Cracha', 'SP', '1980-01-01', 10), 
+	(null, 'Charada', 'Mística', 'RJ', '1993-02-18', 11),
+	(null, 'Curirin', 'Curioso', 'MT', '1999-08-18', 11),
+	(null, 'Rato', 'Borrachudo', 'SP', '1982-05-23', 12), 
+	(null, 'Kara', 'Cracha Junior', 'SP', '1995-01-02', 13), 
+	(null, 'Rassã', 'Sudein', 'TO', '1956-09-11', 14), 
+	(null, 'Lin', 'Baden', 'ES', '1969-06-19', 15), 
+	(null, 'Biro', 'Liru', 'BH', '1953-10-01', 16), 
+	(null, 'Roberto', 'Carlos', 'MG', '1932-07-13', 17),
+	(null, 'Carlos', 'Caruso', 'SP', '1968-02-01', 17);
 
 -- Exibir todos os dados de cada tabela criada, separadamente.
 select * from nadador;
@@ -315,13 +337,19 @@ select * from nadador;
 select * from treinador;
 
 -- Exibir os dados dos treinadores e os dados de seus respectivos nadadores.
-
+select treinador.*, nadador.* from treinador
+	join nadador on fkTreinador = idTreinador;
 
 -- Exibir os dados de um determinado treinador (informar o nome do treinador na consulta) e os dados de seus respectivos nadadores.
-
+select treinador.*, nadador.* from treinador
+	join nadador on fkTreinador = idTreinador
+		where idTreinador = 11;
 
 -- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores.
-
+-- Me desculpa, professora. Eu não entendi como fazer o comando, mas eu tentei escrever abaixo o que eu entendi. 
+select treinador.* from treinador 
+	join treinador on fkTreinadorExp = fkTreinador
+		join treinador on fkTreinador = idTreinador;
 
 -- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores, porém somente de um determinado treinador orientador (informar o nome do treinador na consulta).
 
