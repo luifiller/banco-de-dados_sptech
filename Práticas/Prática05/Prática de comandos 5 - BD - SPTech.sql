@@ -291,10 +291,10 @@ create table treinador (
     telefone_Cel varchar(20),
     email varchar(100), constraint chkEmail check
 		(email like ('%@%')),
-	fkTreinadorExp int, constraint foreign key (fkTreinadorExp)
+	fkTreinadorOrientador int, foreign key (fkTreinadorOrientador)
 		references treinador(idTreinador)
 ) auto_increment = 10;
-SET FOREIGN_KEY_CHECKS=0;
+
 
 create table nadador (
 	idNadador int primary key auto_increment, 
@@ -307,8 +307,6 @@ create table nadador (
 ) auto_increment = 100;
 
 -- Inserir dados nas tabelas, de forma que exista mais de um nadador para algum treinador, e mais de um treinador sendo orientado por algum treinador mais experiente.
-desc treinador;
-
 insert into treinador values
 	(null, 'Janna', 'Livramento', 'Experiente', null, '11-98983-1229', 'janna.livramento@hotmail.com', null),
 	(null, 'Amanda', 'Azevedo', 'Novato', null, '11-99933-9999', 'amanda.azevedo@gmail.com', 10),
@@ -336,8 +334,12 @@ select * from nadador;
 
 select * from treinador;
 
--- Exibir os dados dos treinadores e os dados de seus respectivos nadadores.
-select treinador.*, nadador.* from treinador
+-- Exibir os dados dos treinadores e os dados de seus respectivos nadadores
+-- OBS: escrevi abaixo duas formas de fazer o mesmo select
+select * from treinador as t
+	join nadador as n on n.fkTreinador = t.idTreinador;
+    
+select treinador.*, nadador.* from treinador 
 	join nadador on fkTreinador = idTreinador;
 
 -- Exibir os dados de um determinado treinador (informar o nome do treinador na consulta) e os dados de seus respectivos nadadores.
@@ -346,16 +348,23 @@ select treinador.*, nadador.* from treinador
 		where idTreinador = 11;
 
 -- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores.
--- Me desculpa, professora. Eu não entendi como fazer o comando, mas eu tentei escrever abaixo o que eu entendi. 
-select treinador.* from treinador 
-	join treinador on fkTreinadorExp = fkTreinador
-		join treinador on fkTreinador = idTreinador;
+select * from treinador as t
+	join treinador as t1 on t.idTreinador = t1.fkTreinadorOrientador;
+
 
 -- Exibir os dados dos treinadores e os dados dos respectivos treinadores orientadores, porém somente de um determinado treinador orientador (informar o nome do treinador na consulta).
-
+select * from treinador as t
+	join treinador as t1 on t.idTreinador = t1.fkTreinadorOrientador
+		where t.idTreinador = 10;
 
 -- Exibir os dados dos treinadores, os dados dos respectivos nadadores e os dados dos respectivos treinadores orientadores.
+select * from treinador as t 
+	join nadador as n on n.fkTreinador = t.idTreinador
+		join treinador as t1 on t1.fkTreinadorExp = t.idTreinador;
 
 
 -- Exibir os dados de um treinador (informar o seu nome na consulta), os dados dos respectivos nadadores e os dados do seu treinador orientador.
-
+select * from treinador as t 
+	join nadador as n on n.fkTreinador = t.idTreinador
+		join treinador as t1 on t1.fkTreinadorExp = t.idTreinador
+			where t.idTreinador = 10;
