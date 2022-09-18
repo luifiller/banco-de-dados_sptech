@@ -193,7 +193,7 @@ create table funcionario (
     sobrenome_Func varchar(45),
     telefone_Fixo varchar(20),
     telefone_Cel varchar(20),
-    salario decimal(8,2),
+    salario decimal(8,2), constraint chkSalario check (salario > 0),
     fkSetor int, constraint foreign key (fkSetor)
 		references setor(idSetor)
 );
@@ -360,11 +360,11 @@ select * from treinador as t
 -- Exibir os dados dos treinadores, os dados dos respectivos nadadores e os dados dos respectivos treinadores orientadores.
 select * from treinador as t 
 	join nadador as n on n.fkTreinador = t.idTreinador
-		join treinador as t1 on t1.fkTreinadorExp = t.idTreinador;
+		join treinador as t1 on t1.fkTreinadorOrientador = t.idTreinador;
 
 
 -- Exibir os dados de um treinador (informar o seu nome na consulta), os dados dos respectivos nadadores e os dados do seu treinador orientador.
 select * from treinador as t 
 	join nadador as n on n.fkTreinador = t.idTreinador
-		join treinador as t1 on t1.fkTreinadorExp = t.idTreinador
+		join treinador as t1 on t1.fkTreinadorOrientador = t.idTreinador
 			where t.idTreinador = 10;
