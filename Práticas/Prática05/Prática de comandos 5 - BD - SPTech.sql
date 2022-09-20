@@ -263,8 +263,12 @@ select funcionario.*, acompanhante.* from funcionario
 		where idFunc = 1;
 
 -- Exibir os dados dos funcionários, dos setores em que trabalham e dos seus acompanhantes
-select funcionario.*, setor.*, acompanhante.* from funcionario
+select * from funcionario
 	join setor on fkSetor = idSetor
+		join acompanhante on fkFunc = idFunc;
+        
+select * from setor
+	join funcionario on fkSetor = idSetor
 		join acompanhante on fkFunc = idFunc;
 
 -- Exibir os dados de um funcionário específico, do seu setor e dos seus acompanhantes
@@ -272,6 +276,7 @@ select funcionario.*, setor.*, acompanhante.* from funcionario
 	join setor on fkSetor = idSetor
 		join acompanhante on fkFunc = idFunc
 			where idFunc = 6;
+
 
 -- EXERCICIO 4
 -- Criar um banco de dados chamado Treinador.
