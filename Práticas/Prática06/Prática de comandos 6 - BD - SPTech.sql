@@ -207,12 +207,66 @@ select 	o.nome,
 				join campanha as c on c.fkOrg = o.idOrg;
 
 -- Exibir os dados de um determinado organizador (informar o nome do organizador na consulta) e os dados de suas respectivas campanhas.
-
+select 	o.nome,
+		o.end_rua,
+		o.end_bairro,
+		o.email,
+        c.categoria,
+        c.instituicao,
+        c.data_final
+			from organizador as o
+				join campanha as c on c.fkOrg = o.idOrg
+					where idOrg = 31;
+-- Também poderia ser feito como abaixo
+select * from organizador as o
+	join campanha as c on c.fkOrg = o.idOrg
+		where o.idOrg = 31;
 
 -- Exibir os dados dos organizadores novatos e os dados dos respectivos organizadores orientadores.
-
+select 	o.nome,
+		o.end_rua,
+        o.end_bairro,
+        o.email,
+        oNovato.nome,
+        oNovato.end_rua,
+        oNovato.end_bairro,
+        oNovato.email
+			from organizador as o
+				join organizador as oNovato on oNovato.fkOrg_Exp = o.idOrg;
 
 -- Exibir os dados dos organizadores novatos e os dados dos respectivos organizadores orientadores, porém somente de um determinado organizador orientador (informar o nome do organizador orientador na consulta).
-
+select 	oNovato.nome as "Nome Novato",
+        oNovato.end_rua,
+        oNovato.end_bairro,
+        oNovato.email,
+		o.nome as "Nome Orientadora"
+			from organizador as o
+				join organizador as oNovato on oNovato.fkOrg_Exp = o.idOrg
+					where o.idOrg = 31;
 
 -- Exibir os dados dos organizadores novatos, os dados das respectivas campanhas organizadas e os dados dos respectivos organizadores orientadores.
+select 	oNovato.nome as "Nome Novato",
+        oNovato.end_rua,
+        oNovato.end_bairro,
+        oNovato.email,
+        c.categoria,
+        c.instituicao,
+        c.data_final,
+		o.nome as "Nome Orientadora"
+			from organizador as oNovato
+				join campanha as c on c.fkOrg = oNovato.idOrg
+					join organizador as o on oNovato.fkOrg_Exp = o.idOrg;
+                    
+-- Exibir os dados de um organizador novato (informar o seu nome na consulta), os dados das respectivas campanhas em que trabalha e os dados do seu organizador orientador
+select 	oNovato.nome as "Nome Novato",
+        oNovato.end_rua,
+        oNovato.end_bairro,
+        oNovato.email,
+        c.categoria,
+        c.instituicao,
+        c.data_final,
+		o.nome as "Nome Orientadora"
+			from organizador as oNovato
+				join campanha as c on c.fkOrg = oNovato.idOrg
+					join organizador as o on oNovato.fkOrg_Exp = o.idOrg
+						where oNovato.idOrg = 32;
