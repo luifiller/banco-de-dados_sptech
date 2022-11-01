@@ -156,15 +156,15 @@ select clI.nome,
 			from cliente as clI
 			join cliente as cl on clI.fkCliente = cl.idCliente
 				join venda as v on v.fkCliente = clI.idCliente
-					join produto as p
-					join carrinhoVenda as caV on caV.fkVenda = v.idVenda and caV.fkCliente = clI.idCliente and caV.fkProduto = p.idProduto;
+					join carrinhoVenda as caV on caV.fkVenda = v.idVenda and caV.fkCliente = clI.idCliente
+						join produto as p on caV.fkProduto = p.idProduto;
 
 -- Exibir apenas a data da venda, o nome do produto e a quantidade do produto numa determinada venda.
 select v.dataHora,
         p.nome,
         c.qtdProduto
 		from produto as p
-			join venda as v 
+			join venda as v
 				join carrinhoVenda as c on c.fkVenda = v.idVenda and c.fkProduto = p.idProduto
 					where idVenda = 1;
                 
